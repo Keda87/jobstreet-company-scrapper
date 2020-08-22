@@ -15,6 +15,8 @@ const (
 )
 
 func main() {
+	db := CreateDB()
+
 	totalJob := int(math.Floor(totalData / itemPerPage))
 	jobs := make(chan Payload, totalJob)
 	results := make(chan Company, totalJob)
@@ -36,10 +38,7 @@ func main() {
 	close(jobs)
 
 	for r := range results {
-		// TODO: insert to database
-		fmt.Println(r.CompanyName)
-		fmt.Println(r.Industry)
-		fmt.Println("---")
+		db.Save(&r)
 	}
 
 }
