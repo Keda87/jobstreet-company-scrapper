@@ -10,7 +10,7 @@ import (
 
 const (
 	urlTemplate = "https://api-js.prod.companyreview.co/companies?page=%d&company_name=&per_page=%d&sort=-reviews_count&api_key=jwt_jsIdBrowserKey"
-	totalData   = 131_604
+	totalData   = 131_704
 	itemPerPage = 20
 )
 
@@ -21,7 +21,7 @@ func main() {
 	jobs := make(chan Payload, totalJob)
 	results := make(chan Company, totalJob)
 
-	for i := 1; i <= 20; i++ {
+	for i := 1; i <= 50; i++ {
 		go worker(i, jobs, results)
 	}
 
@@ -44,6 +44,7 @@ func main() {
 }
 
 func worker(id int, jobs <-chan Payload, result chan<- Company) {
+	fmt.Println(fmt.Sprintf("Worker-%d started..", id))
 	for job := range jobs {
 		fmt.Println("[FETCH]", job.URL)
 
